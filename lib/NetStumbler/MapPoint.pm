@@ -7,7 +7,6 @@ require Exporter;
 
 our @ISA = qw(Exporter);
 
-use Exporter 'import';
 use Carp qw(cluck croak);
 use Win32::OLE qw(in with);
 use Win32::OLE::Const;
@@ -17,29 +16,29 @@ our (@EXPORT, @EXPORT_OK, %EXPORT_TAGS);
 #
 @EXPORT_OK = qw(
 hasLibrary
-initializeMap 
-newMap 
-loadMap 
-showMap 
-saveMap 
-addPushpinSet 
-getPushpinSet 
+initializeMap
+newMap
+loadMap
+showMap
+saveMap
+addPushpinSet
+getPushpinSet
 delPushpinSet
 gotoPushpinSet
-addSymbol 
-delSymbol 
-getLocation 
-gotoLocation 
-addPushpin 
-findPushpin 
-setPushpinProperty 
-addPushpinToSet 
+addSymbol
+delSymbol
+getLocation
+gotoLocation
+addPushpin
+findPushpin
+setPushpinProperty
+addPushpinToSet
 delPushpin
 setSaveFlag
 selectItem
 findCity);  # symbols to export on request
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 # Preloaded methods go here.
@@ -111,7 +110,7 @@ sub initializeMap
     {
         # grab the running instance or create an instance
         $self->{mapPoint} = Win32::OLE->GetActiveObject('MapPoint.Application') ||
-        Win32::OLE->new('MapPoint.Application','Quit');	
+        Win32::OLE->new('MapPoint.Application','Quit');
         $self->{initialized} = 1;
     }
 }
@@ -132,7 +131,7 @@ sub newMap
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         unless($self->{initialized})
         {
             $self->initializeMap();
@@ -157,7 +156,7 @@ sub loadMap
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         unless($self->{initialized})
         {
             $self->initializeMap();
@@ -190,7 +189,7 @@ sub showMap
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         $self->{mapPoint}->{UserControl} = 0;
         $self->{mapPoint}->{Visible} = 1;
         $self->{mapPoint}->Activate();
@@ -216,7 +215,7 @@ sub saveMap
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $file = shift;
         unless($file)
         {
@@ -246,7 +245,7 @@ sub setSaveFlag
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         $self->{mapPoint}->{ActiveMap}->{Saved} = -1;
     }
 }
@@ -269,7 +268,7 @@ sub selectItem
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $item = shift;
         $item->Select();
     }
@@ -291,10 +290,10 @@ sub addPushpinSet
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $setName = shift;
         # Try to lookup this dataset
-        my $pp = undef; 
+        my $pp = undef;
         eval
         {
             $pp = $self->{mapPoint}->{ActiveMap}->{DataSets}->Item($setName);
@@ -323,7 +322,7 @@ sub gotoPushpinSet
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $set = shift;
         # Try to lookup this dataset
         eval
@@ -348,7 +347,7 @@ sub getPushpinSet
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $setName = shift;
         # Try to lookup this dataset
         my $pp;
@@ -375,7 +374,7 @@ sub delPushpinSet
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $setName = shift;
         # Try to lookup this dataset
         eval
@@ -401,7 +400,7 @@ sub addSymbol
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $name = shift;
         my $file = shift;
         my $symbol;
@@ -438,7 +437,7 @@ sub hasSymbol
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $name = shift;
         my $symbol;
         eval
@@ -469,7 +468,7 @@ sub delSymbol
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $name = shift;
         eval
         {
@@ -501,10 +500,10 @@ sub getLocation
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my ($lat,$lon,$alt) = @_;
         my $location = undef;
-        eval 
+        eval
         {
             if($alt)
             {
@@ -534,7 +533,7 @@ sub gotoLocation
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $location = shift;
         eval
         {
@@ -560,7 +559,7 @@ sub addPushpin
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $location = shift;
         my $title = shift;
         my $pp = undef;
@@ -580,7 +579,7 @@ sub addPushpin
 
 Find a pushpin by title
 Params:
-        -string Title 
+        -string Title
 Returns:
         Pushpin Object
 Example:
@@ -592,7 +591,7 @@ sub findPushpin
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $title = shift;
         my $pp = undef;;
         eval
@@ -622,7 +621,7 @@ sub setPushpinProperty
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $pp = shift;
         my $prop = shift;
         my $val = shift;
@@ -650,7 +649,7 @@ sub getPushpinProperty
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $pp = shift;
         my $prop = shift;
         my $val;
@@ -678,7 +677,7 @@ sub addPushpinToSet
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $pp = shift;
         my $set = shift;
         eval
@@ -695,7 +694,7 @@ Params:
 Returns:
         none
 Example:
-        $obj->delPushpin("bogus"); 
+        $obj->delPushpin("bogus");
 
 =cut
 
@@ -703,7 +702,7 @@ sub delPushpin
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $pp = shift;
         eval
         {
@@ -719,7 +718,7 @@ Params:
 Returns:
         location object if the city is found
 Example:
-        my $location - $obj->findCity("Atlanta, GA"); 
+        my $location - $obj->findCity("Atlanta, GA");
 
 =cut
 
@@ -727,13 +726,13 @@ sub findCity
 {
     my $self = shift;
     if($self->{hasMappoint})
-    { 
+    {
         my $city = shift;
         my $location = undef;
-        eval 
-        { 
+        eval
+        {
             my $res = $self->{mapPoint}->{ActiveMap}->FindResults($city);
-            $location = $res->{1}; 
+            $location = $res->{1};
         };
         return $location;
     }
@@ -760,28 +759,28 @@ NetStumbler::MapPoint - MapPoint tools for NetStumbler
  as I find a map libraries for use on linux/mac I will add support for those
  this module is fail fast, meaning if you dont have mappoint the method call do
  nothing and do not throw errors
- 
+
 =head2 EXPORT
 
 These functions avaibale for export
 hasLibrary
-initializeMap 
-newMap 
-loadMap 
-showMap 
-saveMap 
-addPushpinSet 
-getPushpinSet 
+initializeMap
+newMap
+loadMap
+showMap
+saveMap
+addPushpinSet
+getPushpinSet
 delPushpinSet
 gotoPushpinSet
-addSymbol 
-delSymbol 
-getLocation 
-gotoLocation 
-addPushpin 
-findPushpin 
-setPushpinProperty 
-addPushpinToSet 
+addSymbol
+delSymbol
+getLocation
+gotoLocation
+addPushpin
+findPushpin
+setPushpinProperty
+addPushpinToSet
 delPushpin
 setSaveFlag
 selectItem
